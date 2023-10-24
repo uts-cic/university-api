@@ -14,6 +14,14 @@ info:
 #     Learner:
 #       $ref: './definitions/learner.yaml'
 paths:
+  /curriculum:
+    get:
+      summary: Retrieve university's curriculum information
+      tags:
+        - Curriculum data
+      responses:
+        '200':
+          description: Curriculum information
   /learner:
     get:
       summary: Retrieve learner's details
@@ -33,12 +41,12 @@ components:
       properties:
         demographicData:
           $ref: '#/components/schemas/DemographicData'
-        enrollmentProgression:
-          $ref: '#/components/schemas/EnrollmentProgression'
+        enrolmentProgression:
+          $ref: '#/components/schemas/EnrolmentProgression'
         # ... Add other categories in a similar manner ...
       required:
         - demographicData
-        - enrollmentProgression
+        - enrolmentProgression
         # ... Add other required categories ...
 
     DemographicData:
@@ -60,7 +68,7 @@ components:
             type: string
           description: Previous academic qualifications of the learner.
 
-    # EnrollmentProgression:
+    # EnrolmentProgression:
     #   type: object
     #   properties:
     #     coursesEnrolled:
@@ -88,13 +96,13 @@ components:
     #             format: int32
     #             description: Progress percentage of the module.
 
-    EnrollmentProgression:
+    EnrolmentProgression:
       type: object
       properties:
         courses:
           type: array
           items:
-            $ref: '#/CourseEnrollment'
+            $ref: '#/components/schemas/CourseEnrolment'
           description: List of courses the learner is currently enrolled in or has completed.
 
         overallProgress:
@@ -111,7 +119,7 @@ components:
               format: float
               description: The overall percentage of course completion by the learner.
 
-    CourseEnrollment:
+    CourseEnrolment:
       type: object
       properties:
         courseId:
@@ -120,7 +128,7 @@ components:
         courseName:
           type: string
           description: Name of the course.
-        enrollmentDate:
+        enrolmentDate:
           type: string
           format: date
           description: Date when the learner enrolled in the course.
