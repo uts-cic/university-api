@@ -1,0 +1,6 @@
+/:
+  get:
+    summary: C
+    responses:
+      '200':
+        description: C

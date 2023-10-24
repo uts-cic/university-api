@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: University API
+  version: 0.1.0
+# paths:
+#   /curriculum:
+#     $ref: './paths/curriculum.yaml'
+#   /learner:
+#     $ref: './paths/learner.yaml'
+# components:
+#   schemas:
+#     Unit:
+#       $ref: './definitions/unit.yaml'
+#     Learner:
+#       $ref: './definitions/learner.yaml'
+paths:
+  /learner:
+    get:
+      summary: Retrieve learner's details
+      tags:
+        - Learner data
+      responses:
+        '200':
+          description: Learner details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Learner'
+components:
+  schemas:
+    Learner:
+      type: object
+      properties:
+        demographicData:
+          $ref: '#/components/schemas/DemographicData'
+        enrollmentProgression:
+          $ref: '#/components/schemas/EnrollmentProgression'
+        # ... Add other categories in a similar manner ...
+      required:
+        - demographicData
+        - enrollmentProgression
+        # ... Add other required categories ...
+
+    DemographicData:
+      type: object
+      properties:
+        age:
+          type: integer
+          format: int32
+          description: Age of the learner.
+        gender:
+          type: string
+          description: Gender of the learner.
+        nationality:
+          type: string
+          description: Nationality of the learner.
+        previousAcademicAchievements:
+          type: array
+          items:
+            type: string
+          description: Previous academic qualifications of the learner.
+
+    # EnrollmentProgression:
+    #   type: object
+    #   properties:
+    #     coursesEnrolled:
+    #       type: array
+    #       items:
+    #         type: string
+    #       description: List of courses the learner is enrolled in.
+    #     courseStartDate:
+    #       type: string
+    #       format: date
+    #       description: Start date of the current course.
+    #     courseEndDate:
+    #       type: string
+    #       format: date
+    #       description: End date of the current course.
+    #     progression:
+    #       type: array
+    #       items:
+    #         type: object
+    #         properties:
+    #           moduleId:
+    #             type: string
+    #           progress:
+    #             type: integer
+    #             format: int32
+    #             description: Progress percentage of the module.
+
+    EnrollmentProgression:
+      type: object
+      properties:
+        courses:
+          type: array
+          items:
+            $ref: '#/CourseEnrollment'
+          description: List of courses the learner is currently enrolled in or has completed.
+
+        overallProgress:
+          type: object
+          properties:
+            completedCourses:
+              type: integer
+              description: Total number of courses the learner has completed.
+            totalCourses:
+              type: integer
+              description: Total number of courses the learner has enrolled in or completed.
+            percentageComplete:
+              type: number
+              format: float
+              description: The overall percentage of course completion by the learner.
+
+    CourseEnrollment:
+      type: object
+      properties:
+        courseId:
+          type: string
+          description: Unique identifier for the course.
+        courseName:
+          type: string
+          description: Name of the course.
+        enrollmentDate:
+          type: string
+          format: date
+          description: Date when the learner enrolled in the course.
+        expectedCompletionDate:
+          type: string
+          format: date
+          description: Expected date by which the learner should complete the course.
+        actualCompletionDate:
+          type: string
+          format: date
+          description: Actual date when the learner completed the course (if completed).
+        currentModule:
+          type: object
+          properties:
+            moduleId:
+              type: string
+              description: Identifier for the current module the learner is on.
+            moduleName:
+              type: string
+              description: Name of the current module.
+            progress:
+              type: number
+              format: float
+              description: Progress percentage of the current module.
+        courseStatus:
+          type: string
+          enum: [enrolled, in_progress, completed, dropped]
+          description: Current status of the learner for this course.
+        grades:
+          type: object
+          properties:
+            midterm:
+              type: number
+              format: float
+              description: Midterm grade for the course.
+            final:
+              type: number
+              format: float
+              description: Final grade for the course.
+            overall:
+              type: number
+              format: float
+              description: Overall grade for the course, considering all assessments.

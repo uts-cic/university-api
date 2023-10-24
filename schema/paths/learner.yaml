@@ -1,0 +1,71 @@
+/learner:
+  get:
+    summary: Retrieve learner's details
+    responses:
+      '200':
+        description: Learner details retrieved successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Learner'
+components:
+  schemas:
+    Learner:
+      type: object
+      properties:
+        demographicData:
+          $ref: '#/components/schemas/DemographicData'
+        enrollmentProgression:
+          $ref: '#/components/schemas/EnrollmentProgression'
+        # ... Add other categories in a similar manner ...
+      required:
+        - demographicData
+        - enrollmentProgression
+        # ... Add other required categories ...
+
+    DemographicData:
+      type: object
+      properties:
+        age:
+          type: integer
+          format: int32
+          description: Age of the learner.
+        gender:
+          type: string
+          description: Gender of the learner.
+        nationality:
+          type: string
+          description: Nationality of the learner.
+        previousAcademicAchievements:
+          type: array
+          items:
+            type: string
+          description: Previous academic qualifications of the learner.
+
+    EnrollmentProgression:
+      type: object
+      properties:
+        coursesEnrolled:
+          type: array
+          items:
+            type: string
+          description: List of courses the learner is enrolled in.
+        courseStartDate:
+          type: string
+          format: date
+          description: Start date of the current course.
+        courseEndDate:
+          type: string
+          format: date
+          description: End date of the current course.
+        progression:
+          type: array
+          items:
+            type: object
+            properties:
+              moduleId:
+                type: string
+              progress:
+                type: integer
+                format: int32
+                description: Progress percentage of the module.
