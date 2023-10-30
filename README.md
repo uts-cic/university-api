@@ -15,11 +15,17 @@ This is a prototype specification that we are using to drive a conversation forw
 
 ## How to contribute
 
-If you would like to contribute then you should:
+Anyone is free to contribute! However, we will be maintaining If you would like to contribute then you should do something like the following:
 
-1. Clone this repo 
-1. Create a new branch for the repo with a helpful name that explains what you are adding
-1. Update the relevant code in this new branch
-1. Commit the changes you have made to that branch
+1. Copy the URL of the repo and then clone it to your local computer
+    `git clone [COPIED URL OF THE REPO]`
+1. Create a new branch for the repo with a helpful name that explains what you are adding and switch to that branch
+    `git branch NEWFEATUREBRANCHNAME`
+    `git checkout NEWFEATUREBRANCHNAME`
+1. Update the relevant code and/or pages while in your new branch using your favourite editor
+1. Commit the changes you have made to that branch along with a message that explains what you were doing
+    `git add .`
+    `git commit -m "SOMETHING MEANINGFUL HERE"`
 1. Push these changes back to origin 
+    `git push origin NEWFEATUREBRANCHNAME`
 1. Create a pull request back into the main branch
