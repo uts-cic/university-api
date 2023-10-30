@@ -17,5 +17,9 @@ This is a prototype specification that we are using to drive a conversation forw
 
 If you would like to contribute then you should:
 
-1. 
-1. 
+1. Clone this repo 
+1. Create a new branch for the repo with a helpful name that explains what you are adding
+1. Update the relevant code in this new branch
+1. Commit the changes you have made to that branch
+1. Push these changes back to origin 
+1. Create a pull request back into the main branch
