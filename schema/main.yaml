@@ -1,7 +1,20 @@
 openapi: 3.0.0
 info:
-  title: University API
+  title: University API [DEMO]
   version: 0.1.0
+  description: >
+    The University-API is a forward-thinking prototype geared towards standardizing 
+    educational data for Learning Analytics. Stemming from George Kroner's visionary 
+    [post](https://edutechnica.com/2015/06/09/flipping-the-model-the-campus-api/), 
+    this project emphasizes harmonious data grouping, irrespective of its origin, 
+    and insists on capturing detailed event contexts. As we sculpt and refine this 
+    specification in real-time at the ALASI23 workshop, we warmly invite contributions 
+    from the community to help shape the future of Learning Analytics.
+
+externalDocs:
+  description: University API on GitHub
+  url: https://github.com/uts-cic/university-api
+
 # paths:
 #   /curriculum:
 #     $ref: './paths/curriculum.yaml'
@@ -24,9 +37,17 @@ paths:
           description: Curriculum information
   /learner:
     get:
-      summary: Retrieve learner's details
+      summary: Retrieve details of a specific learner.
+      description: Fetch comprehensive data about a learner, including academic performance, interactions, content consumption, and more.
       tags:
         - Learner data
+      parameters:
+        - name: learnerId
+          in: query
+          description: The ID of the learner to fetch details for.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Learner details retrieved successfully
@@ -34,6 +55,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Learner'
+
 components:
   schemas:
     Learner:
@@ -43,11 +65,39 @@ components:
           $ref: '#/components/schemas/DemographicData'
         enrolmentProgression:
           $ref: '#/components/schemas/EnrolmentProgression'
-        # ... Add other categories in a similar manner ...
+        performanceAssessment:
+          $ref: '#/components/schemas/PerformanceAssessment'
+        interactionEngagement:
+          $ref: '#/components/schemas/InteractionEngagement'
+        contentConsumption:
+          $ref: '#/components/schemas/ContentConsumption'
+        socialCollaborativeLearning:
+          $ref: '#/components/schemas/SocialCollaborativeLearning'
+        feedbackReflections:
+          $ref: '#/components/schemas/FeedbackReflections'
+        resourceToolUsage:
+          $ref: '#/components/schemas/ResourceToolUsage'
+        behavioralEmotionalMetrics:
+          $ref: '#/components/schemas/BehavioralEmotionalMetrics'
+        personalisationAdaptivity:
+          $ref: '#/components/schemas/PersonalisationAdaptivity'
+        supportIntervention:
+          $ref: '#/components/schemas/SupportIntervention'
+        externalExtracurricularActivity:
+          $ref: '#/components/schemas/ExternalExtracurricularActivity'
       required:
         - demographicData
         - enrolmentProgression
-        # ... Add other required categories ...
+        - performanceAssessment
+        - interactionEngagement
+        - contentConsumption
+        - socialCollaborativeLearning
+        - feedbackReflections
+        - resourceToolUsage
+        - behavioralEmotionalMetrics
+        - personalisationAdaptivity
+        - supportIntervention
+        - externalExtracurricularActivity
 
     DemographicData:
       type: object
@@ -56,45 +106,21 @@ components:
           type: integer
           format: int32
           description: Age of the learner.
+          example: 21
         gender:
           type: string
           description: Gender of the learner.
+          example: Female
         nationality:
           type: string
           description: Nationality of the learner.
+          example: Australian
         previousAcademicAchievements:
           type: array
           items:
             type: string
           description: Previous academic qualifications of the learner.
-
-    # EnrolmentProgression:
-    #   type: object
-    #   properties:
-    #     coursesEnrolled:
-    #       type: array
-    #       items:
-    #         type: string
-    #       description: List of courses the learner is enrolled in.
-    #     courseStartDate:
-    #       type: string
-    #       format: date
-    #       description: Start date of the current course.
-    #     courseEndDate:
-    #       type: string
-    #       format: date
-    #       description: End date of the current course.
-    #     progression:
-    #       type: array
-    #       items:
-    #         type: object
-    #         properties:
-    #           moduleId:
-    #             type: string
-    #           progress:
-    #             type: integer
-    #             format: int32
-    #             description: Progress percentage of the module.
+          example: [HSC, IB, A-Levels]
 
     EnrolmentProgression:
       type: object
@@ -111,13 +137,16 @@ components:
             completedCourses:
               type: integer
               description: Total number of courses the learner has completed.
+              example: 3
             totalCourses:
               type: integer
               description: Total number of courses the learner has enrolled in or completed.
+              example: 5
             percentageComplete:
               type: number
               format: float
               description: The overall percentage of course completion by the learner.
+              example: 60.0
 
     CourseEnrolment:
       type: object
@@ -125,38 +154,47 @@ components:
         courseId:
           type: string
           description: Unique identifier for the course.
+          example: 123456
         courseName:
           type: string
           description: Name of the course.
+          example: Introduction to Physics
         enrolmentDate:
           type: string
           format: date
           description: Date when the learner enrolled in the course.
+          example: 2021-01-01
         expectedCompletionDate:
           type: string
           format: date
           description: Expected date by which the learner should complete the course.
+          example: 2021-06-30
         actualCompletionDate:
           type: string
           format: date
           description: Actual date when the learner completed the course (if completed).
+          example: 2021-06-15
         currentModule:
           type: object
           properties:
             moduleId:
               type: string
               description: Identifier for the current module the learner is on.
+              example: 123456
             moduleName:
               type: string
               description: Name of the current module.
+              example: Thermodynamics
             progress:
               type: number
               format: float
               description: Progress percentage of the current module.
+              example: 50.0
         courseStatus:
           type: string
           enum: [enrolled, in_progress, completed, dropped]
           description: Current status of the learner for this course.
+          example: in_progress
         grades:
           type: object
           properties:
@@ -164,11 +202,830 @@ components:
               type: number
               format: float
               description: Midterm grade for the course.
+              example: 80.0
             final:
               type: number
               format: float
               description: Final grade for the course.
+              example: 90.0
             overall:
               type: number
               format: float
               description: Overall grade for the course, considering all assessments.
+              example: 85.0
+    
+    PerformanceAssessment:
+      type: object
+      properties:
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignmentPerformance'
+          description: List of assignment scores and feedback for the learner.
+
+        testsAndExams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestExamPerformance'
+          description: List of test and exam results for the learner.
+
+        cumulativeGPA:
+          type: number
+          format: float
+          description: Cumulative Grade Point Average of the learner.
+          example: 3.85
+
+    AssignmentPerformance:
+      type: object
+      properties:
+        assignmentId:
+          type: string
+          description: Unique identifier for the assignment.
+          example: 123456
+        assignmentName:
+          type: string
+          description: Name of the assignment.
+          example: Assignment 1
+        score:
+          type: number
+          format: float
+          description: Score achieved by the learner for this assignment.
+          example: 85.5
+        feedback:
+          type: string
+          description: Feedback provided for the assignment by the educator.
+          example: Good work!
+        maxScore:
+          type: number
+          format: float
+          description: Maximum possible score for the assignment.
+          example: 100
+
+    TestExamPerformance:
+      type: object
+      properties:
+        testExamId:
+          type: string
+          description: Unique identifier for the test or exam.
+          example: 123456
+        testExamName:
+          type: string
+          description: Name of the test or exam.
+          example: Midterm Exam
+        score:
+          type: number
+          format: float
+          description: Score achieved by the learner for this test/exam.
+          example: 92.0
+        maxScore:
+          type: number
+          format: float
+          description: Maximum possible score for the test/exam.
+          example: 100
+        percentile:
+          type: number
+          format: float
+          description: The learner's percentile rank compared to all students who took the test/exam.
+          example: 95.5
+    
+    InteractionEngagement:
+      type: object
+      properties:
+        clickstream:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClickstreamData'
+          description: List of clickstream data capturing the sequence and pattern of online interactions.
+
+        timeSpent:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningResourceTime'
+          description: Time spent by the learner on various learning modules or resources.
+
+        attendance:
+          $ref: '#/components/schemas/AttendanceRecord'
+          description: Attendance records of the learner for both physical and online sessions.
+
+    ClickstreamData:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the interaction.
+          example: 2021-01-01T12:00:00Z
+        activity:
+          type: string
+          description: Description of the activity or action performed, e.g., "Clicked on Module 1", "Paused Video", etc.
+          example: Clicked on Module 1
+        moduleId:
+          type: string
+          description: Identifier for the module or resource where the interaction took place.
+          example: 123456
+
+    LearningResourceTime:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Unique identifier for the learning resource or module.
+          example: 123456
+        resourceName:
+          type: string
+          description: Name of the learning resource or module.
+          example: Module 1
+        timeSpentInMinutes:
+          type: integer
+          description: Time spent by the learner on this resource in minutes.
+          example: 30
+
+    AttendanceRecord:
+      type: object
+      properties:
+        physicalClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhysicalClassAttendance'
+        onlineSessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlineSessionAttendance'
+
+    PhysicalClassAttendance:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the physical class.
+          example: 2021-01-01
+        attended:
+          type: boolean
+          description: Whether the learner attended the class.
+          example: true
+
+    OnlineSessionAttendance:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: Unique identifier for the online session.
+          example: 123456
+        sessionName:
+          type: string
+          description: Name or topic of the online session.
+          example: Introduction to Thermodynamics
+        date:
+          type: string
+          format: date-time
+          description: Date and time of the online session.
+          example: 2021-01-01T12:00:00Z
+        attended:
+          type: boolean
+          description: Whether the learner attended the online session.
+          example: true
+
+    ContentConsumption:
+      type: object
+      properties:
+        videoInteractions:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoInteraction'
+          description: List of interactions with videos such as watched, paused, or re-watched.
+
+        readingMaterials:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadingMaterialInteraction'
+          description: List of reading materials and how the learner interacted with them.
+
+        interactiveActivities:
+          type: array
+          items:
+            $ref: '#/components/schemas/InteractiveActivity'
+          description: Interactive activities the learner engaged in, like quizzes or simulations.
+
+    VideoInteraction:
+      type: object
+      properties:
+        videoId:
+          type: string
+          description: Unique identifier for the video.
+          example: 123456
+        videoName:
+          type: string
+          description: Name or title of the video.
+          example: Introduction to Thermodynamics
+        actions:
+          type: array
+          items:
+            type: string
+            enum: [watched, paused, re-watched]
+          description: List of actions taken by the learner on this video.
+          example: [watched, paused, re-watched]
+
+    ReadingMaterialInteraction:
+      type: object
+      properties:
+        materialId:
+          type: string
+          description: Unique identifier for the reading material.
+          example: 123456
+        materialName:
+          type: string
+          description: Name or title of the reading material.
+          example: Introduction to Thermodynamics
+        actions:
+          type: array
+          items:
+            type: string
+            enum: [opened, read, bookmarked]
+          description: List of actions taken by the learner on this reading material.
+          example: [opened, read, bookmarked]
+
+    InteractiveActivity:
+      type: object
+      properties:
+        activityId:
+          type: string
+          description: Unique identifier for the interactive activity.
+          example: 123456
+        activityName:
+          type: string
+          description: Name or type of the interactive activity, e.g., "Quiz on Thermodynamics", "Electromagnetism Simulation".
+          example: Quiz on Thermodynamics
+        actions:
+          type: array
+          items:
+            type: string
+            enum: [attempted, completed, re-attempted]
+          description: List of actions taken by the learner on this interactive activity.
+          example: [attempted, completed, re-attempted]
+
+    SocialCollaborativeLearning:
+      type: object
+      properties:
+        discussionBoard:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscussionBoardInteraction'
+          description: Interactions on discussion boards including posts, replies, and other interactions.
+
+        peerReviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/PeerReviewFeedback'
+          description: Reviews and feedback provided by peers.
+
+        groupProjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupProjectInteraction'
+          description: Contributions and interactions in group projects.
+
+    DiscussionBoardInteraction:
+      type: object
+      properties:
+        postId:
+          type: string
+          description: Unique identifier for the post or reply.
+          example: 123456
+        content:
+          type: string
+          description: Content of the post or reply.
+          example: Hello everyone!
+        type:
+          type: string
+          enum: [post, reply]
+          description: Specifies if it's a main post or a reply to another post.
+          example: post
+        interactions:
+          type: array
+          items:
+            type: string
+            enum: [liked, shared, reported]
+          description: Interactions on the post or reply by the learner.
+          example: [liked, shared, reported]
+
+    PeerReviewFeedback:
+      type: object
+      properties:
+        reviewId:
+          type: string
+          description: Unique identifier for the peer review.
+          example: 123456
+        content:
+          type: string
+          description: Content of the review or feedback.
+          example: Good work!
+        reviewedLearnerId:
+          type: string
+          description: Identifier of the learner being reviewed.
+          example: 123456
+        rating:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+          description: Rating given to the reviewed learner, usually on a scale (e.g., 1-5).
+          example: 4
+
+    GroupProjectInteraction:
+      type: object
+      properties:
+        projectId:
+          type: string
+          description: Unique identifier for the group project.
+          example: 123456
+        contribution:
+          type: string
+          description: Description of the learner's contribution to the project.
+          example: I wrote the code for the simulation.
+        interactions:
+          type: array
+          items:
+            type: string
+            enum: [contributed, discussed, reviewed]
+          description: Different interactions or roles the learner had in the group project.
+          example: [contributed, discussed, reviewed]
+
+    FeedbackReflections:
+      type: object
+      properties:
+        periodicFeedback:
+          type: array
+          items:
+            $ref: '#/components/schemas/PeriodicFeedback'
+          description: Periodic feedback given by the learner on course content, instructors, or infrastructure.
+
+        selfReflections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelfReflection'
+          description: Self-reflection journals or logs created by the learner.
+
+        courseEvaluations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseEvaluation'
+          description: Evaluations and end-of-term feedback for courses.
+
+    PeriodicFeedback:
+      type: object
+      properties:
+        feedbackId:
+          type: string
+          description: Unique identifier for the feedback.
+          example: 123456
+        subject:
+          type: string
+          enum: [course_content, instructor, infrastructure]
+          description: Subject of the feedback.
+          example: course_content
+        content:
+          type: string
+          description: Detailed feedback content.
+          example: The course content is too difficult.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the feedback was given.
+          example: 2021-01-01T12:00:00Z
+
+    SelfReflection:
+      type: object
+      properties:
+        reflectionId:
+          type: string
+          description: Unique identifier for the self-reflection entry.
+          example: 123456
+        content:
+          type: string
+          description: Content of the self-reflection.
+          example: I need to work harder.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the reflection was recorded.
+          example: 2021-01-01T12:00:00Z
+
+    CourseEvaluation:
+      type: object
+      properties:
+        evaluationId:
+          type: string
+          description: Unique identifier for the course evaluation.
+          example: 123456
+        courseId:
+          type: string
+          description: The course being evaluated.
+          example: 123456
+        content:
+          type: string
+          description: Detailed evaluation content.
+          example: The course was very interesting.
+        rating:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+          description: Overall rating for the course on a scale (e.g., 1-5).
+          example: 4
+        timestamp:
+          type: string
+          format: date-time
+          description: When the evaluation was given.
+          example: 2021-01-01T12:00:00Z
+
+    ResourceToolUsage:
+      type: object
+      properties:
+        lmsToolsAccessed:
+          type: array
+          items:
+            $ref: '#/components/schemas/LMSTool'
+          description: LMS tools accessed by the learner, such as calendar or announcement board.
+
+        externalResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalResource'
+          description: External resources accessed or recommended by the learner.
+
+        specializedSoftware:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpecializedSoftware'
+          description: Software or platforms used in specialized courses, like programming environments or design tools.
+
+    LMSTool:
+      type: object
+      properties:
+        toolName:
+          type: string
+          enum: [calendar, announcement_board, gradebook, course_material, forums, quizzes]
+          description: Name of the LMS tool accessed.
+          example: calendar
+        timestamp:
+          type: string
+          format: date-time
+          description: When the tool was accessed.
+          example: 2021-01-01T12:00:00Z
+
+    ExternalResource:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Unique identifier for the external resource.
+          example: 123456
+        resourceTitle:
+          type: string
+          description: Title or name of the external resource.
+          example: Introduction to Thermodynamics
+        resourceLink:
+          type: string
+          format: uri
+          description: URL link to the external resource.
+          example: https://www.youtube.com/watch?v=123456
+        recommendedBy:
+          type: string
+          description: Identifier of who recommended the resource, if applicable.
+          example: 123456
+
+    SpecializedSoftware:
+      type: object
+      properties:
+        softwareName:
+          type: string
+          description: Name of the software or platform.
+          example: MATLAB
+        version:
+          type: string
+          description: Version of the software or platform used.
+          example: 2021a
+        purpose:
+          type: string
+          description: Purpose or course where the software was used.
+          example: Introduction to Thermodynamics
+        timestamp:
+          type: string
+          format: date-time
+          description: When the software was accessed or used.
+          example: 2021-01-01T12:00:00Z
+              
+    BehavioralEmotionalMetrics:
+      type: object
+      properties:
+        sentimentAnalysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/SentimentAnalysisData'
+          description: Sentiment analysis results of text-based interactions.
+
+        behavioralPatterns:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehavioralPattern'
+          description: Detected behavioral patterns suggesting disengagement or motivation.
+
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricDataEntry'
+          description: Biometric data entries, such as eye-tracking or facial expression analysis.
+
+    SentimentAnalysisData:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Unique identifier for the interaction.
+          example: 123456
+        sentiment:
+          type: string
+          enum: [positive, negative, neutral]
+          description: Detected sentiment from the interaction.
+          example: positive
+        source:
+          type: string
+          description: Source of the interaction (e.g., discussion board post, chat message).
+          example: discussion_board
+        content:
+          type: string
+          description: Content of the interaction.
+          example: Hello everyone!
+
+    BehavioralPattern:
+      type: object
+      properties:
+        patternId:
+          type: string
+          description: Unique identifier for the behavioral pattern.
+          example: 123456
+        patternType:
+          type: string
+          enum: [disengagement, motivation]
+          description: Type of behavioral pattern detected.
+          example: disengagement
+        evidence:
+          type: string
+          description: Specific indicators or evidence leading to pattern detection.
+          example: Low engagement with course content.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the pattern was detected.
+          example: 2021-01-01T12:00:00Z
+
+    BiometricDataEntry:
+      type: object
+      properties:
+        dataId:
+          type: string
+          description: Unique identifier for the biometric data entry.
+          example: 123456
+        dataType:
+          type: string
+          enum: [eye_tracking, facial_expression_analysis]
+          description: Type of biometric data.
+          example: eye_tracking
+        dataDetails:
+          type: object
+          additionalProperties: true
+          description: Raw biometric data, structure can vary depending on the data type.
+          example: { "x": 0.5, "y": 0.5 }
+        timestamp:
+          type: string
+          format: date-time
+          description: When the biometric data was collected.
+          example: 2021-01-01T12:00:00Z
+
+    PersonalisationAdaptivity:
+      type: object
+      properties:
+        contentRecommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentRecommendation'
+          description: Data on content or pathways recommended to learners.
+
+        adaptiveContentResponses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdaptiveContentResponse'
+          description: Learners' reactions or responses to adaptive content.
+
+    ContentRecommendation:
+      type: object
+      properties:
+        recommendationId:
+          type: string
+          description: Unique identifier for the content recommendation.
+          example: 123456
+        contentId:
+          type: string
+          description: Identifier of the recommended content or pathway.
+          example: 123456
+        contentTitle:
+          type: string
+          description: Title or name of the recommended content or pathway.
+          example: Introduction to Thermodynamics
+        reason:
+          type: string
+          description: Reason for the recommendation based on learner progress or preferences.
+          example: You might be interested in this course.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the recommendation was made.
+          example: 2021-01-01T12:00:00Z
+
+    AdaptiveContentResponse:
+      type: object
+      properties:
+        contentId:
+          type: string
+          description: Identifier of the adaptive content.
+          example: 123456
+        responseType:
+          type: string
+          enum: [positive, neutral, negative]
+          description: Learner's reaction or response to the adaptive content.
+          example: positive
+        feedback:
+          type: string
+          description: Optional feedback or comment from the learner regarding the adaptive content.
+          example: I liked the content.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the learner reacted or responded.
+          example: 2021-01-01T12:00:00Z
+
+    SupportIntervention:
+      type: object
+      properties:
+        supportInteractions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportInteraction'
+          description: Records of interactions with support staff or tutors.
+
+        suggestedInterventions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterventionRecord'
+          description: Interventions suggested or taken based on academic or engagement metrics.
+
+        interventionResponses:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterventionResponse'
+          description: Learner's reactions or feedback to interventions.
+
+    SupportInteraction:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Unique identifier for the support interaction.
+          example: 123456
+        supportStaffId:
+          type: string
+          description: Identifier of the support staff or tutor involved.
+          example: 123456
+        interactionType:
+          type: string
+          enum: [query, feedback, complaint, guidance]
+          description: Nature of the interaction.
+          example: query
+        interactionContent:
+          type: string
+          description: Detailed content or transcript of the interaction.
+          example: I need help with this assignment.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the interaction took place.
+          example: 2021-01-01T12:00:00Z
+
+    InterventionRecord:
+      type: object
+      properties:
+        interventionId:
+          type: string
+          description: Unique identifier for the intervention.
+          example: 123456
+        reason:
+          type: string
+          description: Reason or basis for the intervention, e.g., low engagement, failing grades.
+          example: Low engagement with course content.
+        actionTaken:
+          type: string
+          description: Detailed description of the suggested or executed intervention.
+          example: Suggested to attend office hours.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the intervention was suggested or executed.
+          example: 2021-01-01T12:00:00Z
+
+    InterventionResponse:
+      type: object
+      properties:
+        interventionId:
+          type: string
+          description: Identifier linking back to the original intervention.
+          example: 123456
+        responseType:
+          type: string
+          enum: [positive, neutral, negative]
+          description: Learner's reaction or response to the intervention.
+          example: positive
+        feedback:
+          type: string
+          description: Optional feedback or comment from the learner about the intervention.
+          example: I liked the intervention.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the learner provided their reaction or feedback.
+          example: 2021-01-01T12:00:00Z
+
+    ExternalExtracurricularActivity:
+      type: object
+      properties:
+        participations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationRecord'
+          description: Records of participation in clubs, societies, or external workshops.
+
+        externalAchievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AchievementRecord'
+          description: Achievements or certifications outside the primary curriculum.
+
+    ParticipationRecord:
+      type: object
+      properties:
+        participationId:
+          type: string
+          description: Unique identifier for the participation record.
+          example: 123456
+        activityType:
+          type: string
+          enum: [club, society, workshop, other]
+          description: Type of extracurricular activity.
+          example: club
+        activityName:
+          type: string
+          description: Name or title of the club, society, or workshop.
+          example: Physics Club
+        role:
+          type: string
+          description: Role of the learner in the activity, e.g., member, president, attendee.
+          example: member
+        startDate:
+          type: string
+          format: date
+          description: Start date of the learner's participation.
+          example: 2021-01-01
+        endDate:
+          type: string
+          format: date
+          description: End date of the learner's participation (if applicable).
+          example: 2021-06-30
+
+    AchievementRecord:
+      type: object
+      properties:
+        achievementId:
+          type: string
+          description: Unique identifier for the achievement or certification.
+        achievementType:
+          type: string
+          enum: [certification, award, other]
+          description: Type of achievement.
+          example: certification
+        title:
+          type: string
+          description: Title or name of the achievement or certification.
+          example: Introduction to Thermodynamics
+        issuingOrganization:
+          type: string
+          description: Organization or body that issued the achievement or certification.
+          example: University of Technology Sydney
+        dateReceived:
+          type: string
+          format: date
+          description: Date when the achievement or certification was awarded.
+          example: 2021-01-01
+        additionalDetails:
+          type: string
+          description: Additional details or context about the achievement.
+          example: Awarded for outstanding performance in the course.
