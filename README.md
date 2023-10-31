@@ -4,12 +4,18 @@ This is a prototype specification that we are using to drive a conversation forw
 
 ## Some design choices we have made in building out this specification
 
+This data specification makes a number of explicit design choices about how data should be represented. To contribute you should follow these guidelines:
+
+1. **Data of similar types should be grouped together** wherever possible e.g. a discussion forum post will be treated the same as a comment on a video, or a tweet, or a slack message. This principle will enable LA tools to consume data from multiple sources and use it irrespective of where it came from.
+1. **Details about events, contexts and sources should be included** wherever possible e.g. if we are recording that a post occurred in a discussion forum (or a learner clicked on a link, or a mark was provided to an assessment) then we also need to store the details of the item on which that activity occurred. Note that these details should also group together wherever possible into common contexts and properties.
+
 WE WILL BE ADDING TO THIS DURING THE WORKSHOP AT ALASI23
 
 ## Helpful resources to guide the development of this repo
 
 - SoLAR position paper on [Generating Data for LA Ecosystems](https://www.solaresearch.org/wp-content/uploads/2020/09/SoLAR_Position-Paper_2020_09.pdf).
 - The [xAPI Profiles server](https://profiles.adlnet.gov/) and related documentation.
+- The [IMS Caliper specification](https://www.imsglobal.org/activity/caliper) and some detailed information about implementing their [profiles](https://github.com/1EdTech/caliper-spec/blob/develop/guides/implementation-guide.md)
 - The [final report](https://ltr.edu.au/vufind/Record/365945/Description?print=1) from the OLT funded [Learning Analytics beyond the LMS](https://beyondlms.org/) project, along with the [GitHub resources](https://beyondlms.org/tools/LA-API/) (which are fairly depreciated now).
 - The JISC LA project and [GitHub resources](https://github.com/jiscdev) (which are fairly depreciated now).
 
