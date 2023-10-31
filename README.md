@@ -4,7 +4,7 @@ This is a prototype specification that we are using to drive a conversation forw
 
 ## Some design choices we have made in building out this specification
 
-
+WE WILL BE ADDING TO THIS DURING THE WORKSHOP AT ALASI23
 
 ## Helpful resources to guide the development of this repo
 
@@ -18,16 +18,16 @@ This is a prototype specification that we are using to drive a conversation forw
 
 Anyone is free to contribute! If you want to make a suggestion for new endpoints or data formats then you will need to do this via pull requests, as we will be performing reviews of suggestions, and trying to generate a community approach around this specication. If you would like to contribute then you should do something like the following:
 
-1. Copy the URL of the repo and then clone it to your local computer
+1. Copy the URL of the repo and then clone it to your local computer  
     `git clone [COPIED URL OF THE REPO]`
-1. Create a new branch for the repo with a helpful name that explains what you are adding and switch to that branch
+1. Create a new branch for the repo with a helpful name that explains what you are adding and switch to that branch  
     `git branch NEW_FEATURE_BRANCHNAME`  
     `git checkout NEW_FEATURE_BRANCHNAME`  
 1. Update the relevant code and/or pages while in your new branch using your favourite editor
-1. Commit the changes you have made to that branch along with a message that explains what you were doing
+1. Commit the changes you have made to that branch along with a message that explains what you were doing  
     `git add .`  
     `git commit -m "A MEANINGFUL COMMENT HERE EXPLAINING WHAT YOU DID"`  
-1. Push these changes back to origin 
+1. Push these changes back to origin   
     `git push origin NEW_FEATURE_BRANCHNAME`  
 1. Create a pull request back into the main branch on the github site for this repo (i.e. go to the GitHub site for this [repo](https://github.com/uts-cic/university-api) and click on the pull request button that should now appear if you have done everything right!)
 
